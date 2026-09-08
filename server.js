@@ -20,6 +20,7 @@ app.use((req, res, next) => {
 
 // Path to local daily-art repo (adjust if needed)
 const ART_DIR = path.resolve('../daily-art/art');
+const API_BASE = 'http://localhost:3001'; // Absolute URL for images
 
 console.log(`Serving art from: ${ART_DIR}`);
 
@@ -50,7 +51,7 @@ app.get('/api/art-pieces', async (req, res) => {
 
           return {
             date: baseName, // Use clean date without suffix
-            imageUrl: `/api/image/${baseName}?dir=${encodeURIComponent(dateStr)}`,
+            imageUrl: `${API_BASE}/api/image/${baseName}?dir=${encodeURIComponent(dateStr)}`,
             mdUrl: `file://${mdPath}`,
             highlights,
             basePrompt,
