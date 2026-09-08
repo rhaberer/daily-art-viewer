@@ -1,9 +1,11 @@
 const REPO_OWNER = import.meta.env.VITE_GITHUB_OWNER || 'rhaberer';
 const REPO_NAME = import.meta.env.VITE_GITHUB_REPO || 'daily-art';
 const GITHUB_TOKEN = import.meta.env.VITE_GITHUB_TOKEN;
+const USE_LOCAL_SERVER = import.meta.env.VITE_USE_LOCAL_SERVER === 'true';
 
 const API_BASE = 'https://api.github.com';
 const RAW_BASE = 'https://raw.githubusercontent.com';
+const LOCAL_API = 'http://localhost:3001/api';
 
 const headers = GITHUB_TOKEN
   ? { Authorization: `token ${GITHUB_TOKEN}` }
@@ -11,7 +13,18 @@ const headers = GITHUB_TOKEN
 
 export async function fetchArtPieces() {
   try {
-    // List all directories in art/ folder
+    // Use local server if enabled
+    if (USE_LOCAL_SERVER) {
+      console.log('📂 Fetching from local server at', LOCAL_API);
+      const response = await fetch(`${LOCAL_API}/art-pieces`);
+      if (!response.ok) {
+        throw new Error(`Local server error: ${response.status}`);
+      }
+      return await response.json();
+    }
+
+    // Otherwise use GitHub API
+    console.log('🌐 Fetching from GitHub API');
     const response = await fetch(
       `${API_BASE}/repos/${REPO_OWNER}/${REPO_NAME}/contents/art`,
       { headers }
