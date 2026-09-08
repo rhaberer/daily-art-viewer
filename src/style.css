@@ -39,18 +39,29 @@ html, body, #app {
 .gallery-card {
   @apply bg-slate-900 rounded-lg overflow-hidden cursor-pointer transition-all border border-slate-800 hover:border-blue-500 hover:shadow-lg hover:shadow-blue-500/20;
   animation: fadeIn 0.3s ease-in;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .gallery-card:hover {
   @apply transform -translate-y-1;
 }
 
-.gallery-card img {
-  @apply w-full h-24 object-cover bg-slate-800;
+.gallery-card-image {
+  @apply flex-shrink-0 w-full bg-slate-800 overflow-hidden;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.gallery-card-image img {
+  @apply w-full h-full object-contain;
 }
 
 .gallery-card-meta {
-  @apply p-3 text-xs text-gray-400;
+  @apply p-3 text-xs text-gray-400 flex-grow;
 }
 
 .gallery-card-date {
@@ -138,4 +149,14 @@ html, body, #app {
 
 .empty-state p {
   @apply text-gray-400 text-sm;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
