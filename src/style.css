@@ -1,0 +1,143 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  box-sizing: border-box;
+}
+
+html, body, #app {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+/* Timeline Sidebar */
+.timeline-sidebar {
+  @apply w-32 bg-slate-900 border-r border-slate-800 overflow-y-auto flex flex-col;
+  scroll-behavior: smooth;
+}
+
+.timeline-item {
+  @apply px-3 py-3 text-xs cursor-pointer border-l-4 border-transparent transition-all hover:bg-slate-800;
+}
+
+.timeline-item.active {
+  @apply border-l-blue-500 bg-slate-800;
+}
+
+.timeline-item:hover {
+  @apply border-l-slate-600;
+}
+
+/* Grid Gallery */
+.gallery-grid {
+  @apply flex-1 p-6 overflow-y-auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 1.5rem;
+}
+
+.gallery-card {
+  @apply bg-slate-900 rounded-lg overflow-hidden cursor-pointer transition-all border border-slate-800 hover:border-blue-500 hover:shadow-lg hover:shadow-blue-500/20;
+  animation: fadeIn 0.3s ease-in;
+}
+
+.gallery-card:hover {
+  @apply transform -translate-y-1;
+}
+
+.gallery-card img {
+  @apply w-full h-24 object-cover bg-slate-800;
+}
+
+.gallery-card-meta {
+  @apply p-3 text-xs text-gray-400;
+}
+
+.gallery-card-date {
+  @apply font-semibold text-white mb-1;
+}
+
+/* Modal */
+.modal-overlay {
+  @apply fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center;
+  animation: fadeIn 0.2s ease-in;
+}
+
+.modal-content {
+  @apply bg-slate-900 rounded-lg max-w-4xl w-11/12 max-h-screen overflow-auto border border-slate-800 shadow-2xl;
+  animation: fadeIn 0.3s ease-in;
+}
+
+.modal-header {
+  @apply sticky top-0 bg-slate-950 border-b border-slate-800 p-4 flex justify-between items-center;
+  z-index: 10;
+}
+
+.modal-body {
+  @apply p-6;
+}
+
+.modal-image {
+  @apply w-full max-w-2xl mx-auto mb-6 rounded-lg border border-slate-700;
+}
+
+.modal-image img {
+  @apply w-full h-auto;
+}
+
+.modal-section {
+  @apply mb-6;
+}
+
+.modal-section-title {
+  @apply text-sm font-bold text-blue-400 uppercase tracking-wider mb-3;
+}
+
+.modal-section-content {
+  @apply text-sm text-gray-300 leading-relaxed;
+}
+
+.modal-section-content pre {
+  @apply bg-slate-800 p-4 rounded border border-slate-700 overflow-x-auto text-xs font-mono my-2;
+}
+
+.modal-section-content code {
+  @apply font-mono text-xs;
+}
+
+.modal-nav {
+  @apply flex gap-3 mt-6 pt-6 border-t border-slate-800;
+}
+
+.modal-nav button {
+  @apply flex-1 px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed;
+}
+
+.modal-close {
+  @apply text-xl cursor-pointer text-gray-400 hover:text-white transition-colors;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-slate-900;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-slate-700 rounded hover:bg-slate-600;
+}
+
+/* Empty state */
+.empty-state {
+  @apply flex flex-col items-center justify-center h-full text-center;
+}
+
+.empty-state p {
+  @apply text-gray-400 text-sm;
+}
