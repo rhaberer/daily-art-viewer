@@ -14,11 +14,10 @@ export function renderGrid(containerId, pieces, onCardClick) {
     .map(
       piece => `
       <div class="gallery-card" data-date="${piece.date}">
-        <div class="gallery-card-image-wrapper">
+        <div class="gallery-card-image">
           <img 
             src="${piece.imageUrl}" 
             alt="${piece.date}" 
-            loading="lazy"
             onerror="console.error('Image failed to load:', this.src)"
             onload="console.log('Image loaded:', this.src)"
           />
