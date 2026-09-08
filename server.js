@@ -19,8 +19,10 @@ app.get('/api/art-pieces', async (req, res) => {
     const pieces = await Promise.all(
       dateDirs.map(async dir => {
         const dateStr = dir.name;
-        const mdPath = path.join(ART_DIR, dateStr, `${dateStr}.md`);
-        const pngPath = path.join(ART_DIR, dateStr, `${dateStr}.png`);
+        const baseName = dateStr.replace(/\s+\(\d+\)$/, ''); // Remove " (1)", " (2)" etc.
+        
+        const mdPath = path.join(ART_DIR, dateStr, `${baseName}.md`);
+        const pngPath = path.join(ART_DIR, dateStr, `${baseName}.png`);
 
         try {
           const mdContent = await fs.readFile(mdPath, 'utf-8');
@@ -35,15 +37,15 @@ app.get('/api/art-pieces', async (req, res) => {
           const { highlights, basePrompt, refinedPrompt } = parseMarkdown(mdContent);
 
           return {
-            date: dateStr,
-            imageUrl: `/api/image/${dateStr}`,
+            date: baseName, // Use clean date without suffix
+            imageUrl: `/api/image/${baseName}?dir=${encodeURIComponent(dateStr)}`,
             mdUrl: `file://${mdPath}`,
             highlights,
             basePrompt,
             refinedPrompt,
           };
         } catch (err) {
-          console.error(`Error processing ${dateStr}:`, err.message);
+          // Silently skip directories with issues
           return null;
         }
       })
@@ -53,6 +55,7 @@ app.get('/api/art-pieces', async (req, res) => {
       .filter(p => p !== null)
       .sort((a, b) => new Date(b.date) - new Date(a.date));
 
+    console.log(`✅ Found ${sorted.length} art pieces`);
     res.json(sorted);
   } catch (error) {
     console.error('Error reading art directory:', error);
@@ -63,7 +66,8 @@ app.get('/api/art-pieces', async (req, res) => {
 app.get('/api/image/:dateStr', async (req, res) => {
   try {
     const { dateStr } = req.params;
-    const imagePath = path.join(ART_DIR, dateStr, `${dateStr}.png`);
+    const dirName = req.query.dir || dateStr; // Use actual dir name if provided
+    const imagePath = path.join(ART_DIR, dirName, `${dateStr}.png`);
     const imageData = await fs.readFile(imagePath);
     res.set('Content-Type', 'image/png');
     res.send(imageData);
