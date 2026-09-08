@@ -14,12 +14,10 @@ export function renderTimeline(containerId, pieces, onDateSelect) {
   const clearBtn = document.getElementById('clear-filter');
 
   dates.forEach(date => {
-    const count = pieces.filter(p => p.date === date).length;
     const item = document.createElement('div');
     item.className = 'timeline-item';
     item.innerHTML = `
-      <div class="font-semibold">${date}</div>
-      <div class="text-gray-500">${count} piece${count > 1 ? 's' : ''}</div>
+      <div class="font-semibold text-sm">${date}</div>
     `;
 
     item.addEventListener('click', () => {
