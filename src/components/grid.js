@@ -15,7 +15,13 @@ export function renderGrid(containerId, pieces, onCardClick) {
       piece => `
       <div class="gallery-card" data-date="${piece.date}">
         <div class="gallery-card-image-wrapper">
-          <img src="${piece.imageUrl}" alt="${piece.date}" loading="lazy" />
+          <img 
+            src="${piece.imageUrl}" 
+            alt="${piece.date}" 
+            loading="lazy"
+            onerror="console.error('Image failed to load:', this.src)"
+            onload="console.log('Image loaded:', this.src)"
+          />
         </div>
         <div class="gallery-card-meta">
           <div class="gallery-card-date">${piece.date}</div>
@@ -25,6 +31,9 @@ export function renderGrid(containerId, pieces, onCardClick) {
     `
     )
     .join('');
+
+  // Log all image URLs for debugging
+  console.log('Image URLs:', pieces.map(p => p.imageUrl));
 
   container.querySelectorAll('.gallery-card').forEach(card => {
     card.addEventListener('click', () => {
